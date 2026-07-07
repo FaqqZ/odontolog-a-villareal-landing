@@ -112,6 +112,13 @@ flipCards.forEach(card => {
     // Touch/Click interaction for mobile
     card.addEventListener('click', () => {
         if (isTouchDevice) {
+            // Remove flipped class from all other cards
+            flipCards.forEach(otherCard => {
+                if (otherCard !== card) {
+                    otherCard.classList.remove('flipped');
+                }
+            });
+            // Toggle current card
             card.classList.toggle('flipped');
         }
     });
@@ -120,6 +127,13 @@ flipCards.forEach(card => {
     card.addEventListener('keydown', (e) => {
         if (e.key === 'Enter' || e.key === ' ') {
             e.preventDefault();
+            // Remove flipped class from all other cards
+            flipCards.forEach(otherCard => {
+                if (otherCard !== card) {
+                    otherCard.classList.remove('flipped');
+                }
+            });
+            // Toggle current card
             card.classList.toggle('flipped');
         }
     });
