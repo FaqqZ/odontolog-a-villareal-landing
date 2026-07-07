@@ -70,11 +70,19 @@ ul {
     align-items: center;
     justify-content: space-between;
     gap: 20px;
+    height: 50px;
+}
+
+.logo {
+    height: 100%;
+    display: flex;
+    align-items: center;
 }
 
 .logo img {
-    height: 50px;
+    max-height: 100%;
     width: auto;
+    object-fit: contain;
 }
 
 .nav {
@@ -353,9 +361,14 @@ ul {
     box-shadow: 0 5px 20px var(--color-shadow);
 }
 
-.flip-card:hover .flip-card-inner,
 .flip-card.flipped .flip-card-inner {
     transform: rotateY(180deg);
+}
+
+@media (hover: hover) and (pointer: fine) {
+    .flip-card:hover .flip-card-inner {
+        transform: rotateY(180deg);
+    }
 }
 
 .flip-card-front,
