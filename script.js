@@ -51,41 +51,12 @@ const observer = new IntersectionObserver((entries) => {
 
 // Add fade-in class to elements and observe them
 const animatedElements = document.querySelectorAll(
-    '.service-card, .flip-card, .testimonial-slide, .contact-item, .contact-map, .cta-content'
+    '.service-card, .step-card, .workflow-note, .faq-item, .contact-item, .contact-map, .cta-content'
 );
 
 animatedElements.forEach(el => {
     el.classList.add('fade-in');
     observer.observe(el);
-});
-
-// Testimonials Carousel
-const slides = document.querySelectorAll('.testimonial-slide');
-const dots = document.querySelectorAll('.dot');
-let currentSlide = 0;
-
-function showSlide(index) {
-    slides.forEach((slide, i) => {
-        slide.classList.remove('active');
-        dots[i].classList.remove('active');
-    });
-    
-    slides[index].classList.add('active');
-    dots[index].classList.add('active');
-    currentSlide = index;
-}
-
-// Auto-advance carousel
-setInterval(() => {
-    const nextSlide = (currentSlide + 1) % slides.length;
-    showSlide(nextSlide);
-}, 5000);
-
-// Click on dots to change slide
-dots.forEach((dot, index) => {
-    dot.addEventListener('click', () => {
-        showSlide(index);
-    });
 });
 
 // Header scroll effect
@@ -102,39 +73,4 @@ window.addEventListener('scroll', () => {
     }
     
     lastScroll = currentScroll;
-});
-
-// Flip Card Touch/Click Interaction
-const flipCards = document.querySelectorAll('.flip-card');
-const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
-
-flipCards.forEach(card => {
-    // Touch/Click interaction for mobile
-    card.addEventListener('click', () => {
-        if (isTouchDevice) {
-            // Remove flipped class from all other cards
-            flipCards.forEach(otherCard => {
-                if (otherCard !== card) {
-                    otherCard.classList.remove('flipped');
-                }
-            });
-            // Toggle current card
-            card.classList.toggle('flipped');
-        }
-    });
-    
-    // Keyboard accessibility
-    card.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
-            e.preventDefault();
-            // Remove flipped class from all other cards
-            flipCards.forEach(otherCard => {
-                if (otherCard !== card) {
-                    otherCard.classList.remove('flipped');
-                }
-            });
-            // Toggle current card
-            card.classList.toggle('flipped');
-        }
-    });
 });
