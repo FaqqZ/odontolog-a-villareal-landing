@@ -1,76 +1,95 @@
-// Mobile Menu Toggle
+const WHATSAPP_NUMBER = '5493813333555';
+
+// Menú mobile
 const menuToggle = document.querySelector('.menu-toggle');
 const nav = document.querySelector('.nav');
 
-menuToggle.addEventListener('click', () => {
-    menuToggle.classList.toggle('active');
-    nav.classList.toggle('active');
-});
+function setMenu(open) {
+    menuToggle.classList.toggle('active', open);
+    nav.classList.toggle('active', open);
+    menuToggle.setAttribute('aria-expanded', String(open));
+}
 
-// Close menu when clicking on a nav link
-const navLinks = document.querySelectorAll('.nav-link');
-navLinks.forEach(link => {
-    link.addEventListener('click', () => {
-        menuToggle.classList.remove('active');
-        nav.classList.remove('active');
-    });
-});
+menuToggle.addEventListener('click', () => setMenu(!nav.classList.contains('active')));
+document.querySelectorAll('.nav-link').forEach(link => link.addEventListener('click', () => setMenu(false)));
 
-// Smooth Scroll for anchor links
+// Scroll suave con compensación del header fijo
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
-        e.preventDefault();
         const target = document.querySelector(this.getAttribute('href'));
-        if (target) {
-            const headerOffset = 80;
-            const elementPosition = target.getBoundingClientRect().top;
-            const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+        if (!target) return;
+        e.preventDefault();
 
-            window.scrollTo({
-                top: offsetPosition,
-                behavior: 'smooth'
-            });
+        // Los CTA de "solución" preseleccionan el tipo de trabajo
+        const tipo = this.dataset.tipo;
+        if (tipo) {
+            const select = document.getElementById('tipo');
+            if (select) select.value = tipo;
         }
+
+        const headerOffset = 72;
+        const top = target.getBoundingClientRect().top + window.pageYOffset - (target.id === 'inicio' ? 0 : headerOffset);
+        window.scrollTo({ top, behavior: 'smooth' });
     });
 });
 
-// Intersection Observer for fade-in animations
-const observerOptions = {
-    root: null,
-    rootMargin: '0px',
-    threshold: 0.1
-};
-
-const observer = new IntersectionObserver((entries) => {
+// Animaciones de entrada
+const revealObserver = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
         if (entry.isIntersecting) {
             entry.target.classList.add('visible');
+            revealObserver.unobserve(entry.target);
         }
     });
-}, observerOptions);
+}, { threshold: 0.12 });
 
-// Add fade-in class to elements and observe them
-const animatedElements = document.querySelectorAll(
-    '.service-card, .step-card, .workflow-note, .faq-item, .contact-item, .contact-map, .cta-content'
-);
+document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
 
-animatedElements.forEach(el => {
-    el.classList.add('fade-in');
-    observer.observe(el);
-});
-
-// Header scroll effect
+// Header: borde y sombra al hacer scroll
 const header = document.querySelector('.header');
-let lastScroll = 0;
+const onScroll = () => header.classList.toggle('scrolled', window.pageYOffset > 8);
+window.addEventListener('scroll', onScroll, { passive: true });
+onScroll();
 
-window.addEventListener('scroll', () => {
-    const currentScroll = window.pageYOffset;
-    
-    if (currentScroll > 100) {
-        header.style.boxShadow = '0 4px 20px rgba(0, 0, 0, 0.15)';
-    } else {
-        header.style.boxShadow = '0 2px 10px rgba(0, 0, 0, 0.1)';
+// Formulario: arma el mensaje y abre WhatsApp
+const form = document.getElementById('case-form');
+const note = document.getElementById('form-note');
+
+form.addEventListener('submit', (e) => {
+    e.preventDefault();
+
+    const fields = ['nombre', 'matricula', 'whatsapp', 'email', 'tipo'];
+    let valid = true;
+    fields.forEach(name => {
+        const el = form.elements[name];
+        const ok = el.value.trim() !== '' && el.checkValidity();
+        el.classList.toggle('invalid', !ok);
+        if (!ok) valid = false;
+    });
+
+    if (!valid) {
+        note.textContent = 'Revisá los campos marcados para continuar.';
+        note.classList.add('error');
+        return;
     }
-    
-    lastScroll = currentScroll;
+
+    note.classList.remove('error');
+    note.textContent = 'Abriendo WhatsApp…';
+
+    const v = (name) => form.elements[name].value.trim();
+    const lines = [
+        'Hola VILAB, quiero enviar un caso.',
+        '',
+        `Nombre y apellido: ${v('nombre')}`,
+        `Matrícula: ${v('matricula')}`,
+        `WhatsApp: ${v('whatsapp')}`,
+        `Email: ${v('email')}`,
+        `Tipo de trabajo: ${v('tipo')}`
+    ];
+    if (v('mensaje')) lines.push(`Mensaje: ${v('mensaje')}`);
+
+    const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(lines.join('\n'))}`;
+    window.open(url, '_blank', 'noopener');
 });
+
+form.addEventListener('input', (e) => e.target.classList.remove('invalid'));
