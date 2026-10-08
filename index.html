@@ -228,31 +228,31 @@
                     <article class="solution reveal">
                         <h3><span class="num">01</span> Restauración</h3>
                         <ul>
-                            <li>Coronas de zirconio</li>
-                            <li>Coronas de disilicato</li>
-                            <li>Incrustaciones de zirconio</li>
-                            <li>Incrustaciones de disilicato</li>
+                            <li><button type="button" class="job" data-job="corona-zirconio"><span>Coronas de zirconio</span><svg class="icon" width="16" height="16" aria-hidden="true"><use href="#i-arrow"/></svg></button></li>
+                            <li><button type="button" class="job" data-job="corona-disilicato"><span>Coronas de disilicato</span><svg class="icon" width="16" height="16" aria-hidden="true"><use href="#i-arrow"/></svg></button></li>
+                            <li><button type="button" class="job" data-job="incrustacion-zirconio"><span>Incrustaciones de zirconio</span><svg class="icon" width="16" height="16" aria-hidden="true"><use href="#i-arrow"/></svg></button></li>
+                            <li><button type="button" class="job" data-job="incrustacion-disilicato"><span>Incrustaciones de disilicato</span><svg class="icon" width="16" height="16" aria-hidden="true"><use href="#i-arrow"/></svg></button></li>
                         </ul>
                     </article>
                     <article class="solution reveal">
                         <h3><span class="num">02</span> Diagnóstico</h3>
                         <ul>
-                            <li>Encerados diagnósticos</li>
-                            <li>Modelos 3D</li>
-                            <li>Escaneo de modelos</li>
+                            <li><button type="button" class="job" data-job="encerado"><span>Encerados diagnósticos</span><svg class="icon" width="16" height="16" aria-hidden="true"><use href="#i-arrow"/></svg></button></li>
+                            <li><button type="button" class="job" data-job="modelo-3d"><span>Modelos 3D</span><svg class="icon" width="16" height="16" aria-hidden="true"><use href="#i-arrow"/></svg></button></li>
+                            <li><button type="button" class="job" data-job="escaneo"><span>Escaneo de modelos</span><svg class="icon" width="16" height="16" aria-hidden="true"><use href="#i-arrow"/></svg></button></li>
                         </ul>
                     </article>
                     <article class="solution reveal">
                         <h3><span class="num">03</span> Cirugía</h3>
                         <ul>
-                            <li>Planificación de guías quirúrgicas</li>
-                            <li>Impresión de guías quirúrgicas</li>
+                            <li><button type="button" class="job" data-job="guia-planificacion"><span>Planificación de guías quirúrgicas</span><svg class="icon" width="16" height="16" aria-hidden="true"><use href="#i-arrow"/></svg></button></li>
+                            <li><button type="button" class="job" data-job="guia-impresion"><span>Impresión de guías quirúrgicas</span><svg class="icon" width="16" height="16" aria-hidden="true"><use href="#i-arrow"/></svg></button></li>
                         </ul>
                     </article>
                     <article class="solution reveal">
                         <h3><span class="num">04</span> Protección</h3>
                         <ul>
-                            <li>Protectores bucales</li>
+                            <li><button type="button" class="job" data-job="protector"><span>Protectores bucales</span><svg class="icon" width="16" height="16" aria-hidden="true"><use href="#i-arrow"/></svg></button></li>
                         </ul>
                     </article>
                 </div>
@@ -450,6 +450,23 @@
     <a href="https://wa.me/5493813333555?text=Hola,%20quiero%20enviar%20un%20caso%20a%20VILAB" class="whatsapp-float" target="_blank" rel="noopener" aria-label="Hablar por WhatsApp">
         <svg width="30" height="30"><use href="#i-wa"/></svg>
     </a>
+
+    <!-- Modal de trabajos -->
+    <div class="modal" id="job-modal" role="dialog" aria-modal="true" aria-labelledby="job-title" hidden>
+        <div class="modal-backdrop" data-close></div>
+        <div class="modal-panel">
+            <button type="button" class="modal-close" aria-label="Cerrar" data-close>&times;</button>
+            <div class="modal-media" id="job-media">
+                <img id="job-img" alt="" decoding="async">
+                <div class="modal-thumbs" id="job-thumbs"></div>
+            </div>
+            <div class="modal-body">
+                <h3 id="job-title"></h3>
+                <p id="job-desc"></p>
+                <a href="#contacto" class="btn btn-primary" id="job-cta">Consultar por este trabajo <svg class="icon" width="18" height="18" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+            </div>
+        </div>
+    </div>
 
     <script src="script.js"></script>
 </body>
